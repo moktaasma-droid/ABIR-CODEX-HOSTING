@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard · Abir-Codex Cloud</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-1" id="dashBody">
+
+  <!-- NAVBAR -->
+  <nav class="navbar dash-nav">
+    <div class="logo">Abir-<span>Codex</span></div>
+    <div class="nav-center">
+      <span class="welcome-tag">Hello, <strong id="navUser">User</strong></span>
+    </div>
+    <div class="nav-links">
+      <button class="btn-ghost-sm" onclick="openBgModal()">🎨 Theme</button>
+      <button class="btn-ghost-sm" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="side-nav">
+        <button class="side-btn active" onclick="showTab('upload')">📁 Upload</button>
+        <button class="side-btn" onclick="showTab('projects')">🌐 Projects</button>
+        <button class="side-btn" onclick="showTab('terminal')">🖥️ Terminal</button>
+        <button class="side-btn" onclick="showTab('logs')">📊 Live Logs</button>
+        <button class="side-btn" onclick="showTab('console')">💻 Console</button>
+      </nav>
+      <div class="ad-side">
+        <div class="ad-placeholder small">[ Side Ad ]<br/><small>AdSense here</small></div>
+      </div>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main class="dash-main">
+
+      <!-- UPLOAD TAB -->
+      <div class="tab-panel active" id="tab-upload">
+        <h2 class="panel-title">📁 Upload & Deploy</h2>
+        <div class="upload-zone" id="dropZone"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleDrop(event)">
+          <div class="upload-icon">⬆️</div>
+          <p>Drag & drop files here</p>
+          <p><small>HTML, CSS, JS, Python, Java, PHP, React, Go, C++, and more</small></p>
+          <label class="btn-primary" style="cursor:pointer">
+            Browse Files
+            <input type="file" id="fileInput" multiple style="display:none" onchange="handleFiles(this.files)"/>
+          </label>
+        </div>
+        <div id="fileList" class="file-list"></div>
+        <button class="btn-primary" id="deployBtn" style="display:none" onclick="deployFiles()">🚀 Deploy Now</button>
+        <!-- Ad before deploy -->
+        <div id="adBeforeDeploy" style="display:none" class="ad-inline">
+          <p>Watch this ad to deploy for free:</p>
+          <div class="ad-placeholder">[ Video Ad Slot — Replace with AdSense / Adsterra ]</div>
+          <button class="btn-primary" onclick="confirmDeploy()">✅ Ad Watched — Deploy!</button>
+        </div>
+      </div>
+
+      <!-- PROJECTS TAB -->
+      <div class="tab-panel" id="tab-projects">
+        <h2 class="panel-title">🌐 Your Projects</h2>
+        <div id="projectGrid" class="project-grid">
+          <p class="empty-msg">No projects yet. Upload files to get started!</p>
+        </div>
+      </div>
+
+      <!-- TERMINAL TAB -->
+      <div class="tab-panel" id="tab-terminal">
+        <h2 class="panel-title">🖥️ Real Terminal</h2>
+        <div class="terminal-wrap">
+          <div class="t-bar"><span></span><span></span><span></span> <small>bash</small></div>
+          <div class="terminal-output" id="termOutput">
+            <div class="t-line"><span class="c-green">abir-codex@cloud</span>:<span class="c-cyan">~</span>$ </div>
+          </div>
+          <div class="terminal-input-row">
+            <span class="c-green">$</span>
+            <input type="text" id="termInput" class="term-input" placeholder="Type a command..." onkeydown="handleTermKey(event)"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGS TAB -->
+      <div class="tab-panel" id="tab-logs">
+        <h2 class="panel-title">📊 Real-time Logs</h2>
+        <div class="log-controls">
+          <button class="btn-ghost-sm" onclick="clearLogs()">🗑 Clear</button>
+          <button class="btn-ghost-sm" onclick="startLogs()" id="logToggle">▶ Start</button>
+          <span class="log-status" id="logStatus">● Stopped</span>
+        </div>
+        <div class="log-window" id="logWindow">
+          <p class="c-gray">Press Start to begin streaming logs...</p>
+        </div>
+      </div>
+
+      <!-- CONSOLE TAB -->
+      <div class="tab-panel" id="tab-console">
+        <h2 class="panel-title">💻 Browser Console</h2>
+        <div class="console-wrap">
+          <div class="console-output" id="consoleOutput"></div>
+          <div class="console-input-row">
+            <span class="c-cyan">&gt;</span>
+            <input type="text" id="consoleInput" class="term-input" placeholder="Run JS expression..." onkeydown="handleConsoleKey(event)"/>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- BACKGROUND THEME MODAL -->
+  <div class="modal-overlay" id="bgModal" style="display:none" onclick="if(event.target===this)closeBgModal()">
+    <div class="modal">
+      <h3>🎨 Choose Your Theme</h3>
+      <div class="bg-grid">
+        <div class="bg-option" onclick="setBg('bg-1')" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)">
+          <span>Space Dark</span>
+        </div>
+        <div class="bg-option" onclick="setBg('bg-2')" style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)">
+          <span>Ocean Deep</span>
+        </div>
+        <div class="bg-option" onclick="setBg('bg-3')" style="background:linear-gradient(135deg,#1a0533,#3d0066,#6a00a8)">
+          <span>Neon Purple</span>
+        </div>
+        <div class="bg-option" onclick="setBg('bg-4')" style="background:linear-gradient(135deg,#003d00,#006600,#004d00)">
+          <span>Matrix Green</span>
+        </div>
+        <div class="bg-option" onclick="setBg('bg-5')" style="background:linear-gradient(135deg,#1a0a00,#3d1a00,#5c2800)">
+          <span>Ember Dark</span>
+        </div>
+      </div>
+      <button class="btn-ghost-sm" onclick="closeBgModal()">Close</button>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

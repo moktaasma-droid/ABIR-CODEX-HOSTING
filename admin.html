@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel · Abir-Codex</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-1 auth-page" id="adminBody">
+
+  <!-- ADMIN LOGIN -->
+  <div class="auth-wrap" id="adminLoginWrap">
+    <div class="auth-card">
+      <div class="auth-logo">🛡️ Admin<span>Panel</span></div>
+      <h2>Admin Access Only</h2>
+      <div class="field">
+        <label>Admin Username</label>
+        <input type="text" id="adminUser" placeholder="Abir-Codex"/>
+      </div>
+      <div class="field">
+        <label>Admin Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="adminPass" placeholder="Enter admin password"/>
+          <button class="eye-btn" onclick="togglePass('adminPass')">👁</button>
+        </div>
+      </div>
+      <div class="err-msg" id="adminErr"></div>
+      <button class="btn-primary full" onclick="adminLogin()">Access Admin Panel</button>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="adminDash" style="display:none">
+    <nav class="navbar dash-nav">
+      <div class="logo">🛡️ Admin <span>Panel</span></div>
+      <div class="nav-links">
+        <button class="btn-ghost-sm" onclick="adminLogout()">Logout</button>
+      </div>
+    </nav>
+
+    <div class="admin-layout">
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" id="totalUsers">0</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="activeUsers">0</div>
+          <div class="stat-label">Active Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="totalProjects">0</div>
+          <div class="stat-label">Total Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="totalFiles">0</div>
+          <div class="stat-label">Files Hosted</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="adminShowTab('users')">👥 Users</button>
+        <button class="tab-btn" onclick="adminShowTab('projects')">🌐 Projects</button>
+        <button class="tab-btn" onclick="adminShowTab('settings')">⚙️ Settings</button>
+        <button class="tab-btn" onclick="adminShowTab('ads')">📢 Ad Setup</button>
+      </div>
+
+      <!-- USERS TAB -->
+      <div class="admin-panel active" id="admin-users">
+        <h3>All Registered Users</h3>
+        <input type="text" class="search-box" id="userSearch" placeholder="Search users..." oninput="filterUsers()"/>
+        <table class="admin-table" id="usersTable">
+          <thead>
+            <tr><th>Username</th><th>Joined</th><th>Projects</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="usersTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- PROJECTS TAB -->
+      <div class="admin-panel" id="admin-projects">
+        <h3>All Projects</h3>
+        <table class="admin-table">
+          <thead>
+            <tr><th>Project ID</th><th>Owner</th><th>Files</th><th>Deploy Date</th><th>Action</th></tr>
+          </thead>
+          <tbody id="projectsTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div class="admin-panel" id="admin-settings">
+        <h3>Platform Settings</h3>
+        <div class="setting-group">
+          <label>Max file size (MB)</label>
+          <input type="number" id="maxFileSize" value="50"/>
+        </div>
+        <div class="setting-group">
+          <label>Max projects per user</label>
+          <input type="number" id="maxProjects" value="10"/>
+        </div>
+        <div class="setting-group">
+          <label>Maintenance Mode</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="maintenanceMode"/>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-group">
+          <label>Welcome Message for Users</label>
+          <textarea id="welcomeMsg" rows="3">Welcome to Abir-Codex Cloud! Deploy your projects for free.</textarea>
+        </div>
+        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+        <div class="suc-msg" id="settingsSuc"></div>
+      </div>
+
+      <!-- ADS SETUP TAB -->
+      <div class="admin-panel" id="admin-ads">
+        <h3>📢 Ad Setup Guide</h3>
+        <div class="ad-guide">
+          <h4>How to Add Ads (Earn Money)</h4>
+          <ol>
+            <li>Sign up at <strong>Google AdSense</strong> (adsense.google.com)</li>
+            <li>Get approved and copy your Publisher ID (ca-pub-XXXXXXXX)</li>
+            <li>Paste the AdSense script in <code>&lt;head&gt;</code> of index.html</li>
+            <li>Replace ad placeholders in the code with your ad units</li>
+          </ol>
+          <hr/>
+          <h4>Alternative Ad Networks (Easier Approval)</h4>
+          <ul>
+            <li><strong>Adsterra</strong> — adsterra.com (easy approval)</li>
+            <li><strong>PropellerAds</strong> — propellerads.com</li>
+            <li><strong>Media.net</strong> — media.net</li>
+          </ul>
+          <hr/>
+          <h4>Recommended Ad Placements</h4>
+          <ul>
+            <li>Top banner (728×90) — homepage</li>
+            <li>Before deploy button (300×250) — dashboard</li>
+            <li>Sidebar (160×600) — dashboard</li>
+            <li>Pre-roll video ad before deploy</li>
+          </ul>
+          <div class="info-box">💡 Users watch an ad before every deploy — this is your main revenue source!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

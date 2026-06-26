@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login · Abir-Codex Cloud</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-1 auth-page">
+
+  <div class="auth-wrap">
+    <div class="auth-card" id="loginBox">
+      <div class="auth-logo">Abir-<span>Codex</span></div>
+      <h2 id="formTitle">Welcome Back</h2>
+      <p class="auth-sub" id="formSub">Sign in to your account</p>
+
+      <div class="tab-switch">
+        <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="loginUser" placeholder="yourname@" autocomplete="username"/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password"/>
+            <button class="eye-btn" onclick="togglePass('loginPass')">👁</button>
+          </div>
+        </div>
+        <div class="err-msg" id="loginErr"></div>
+        <button class="btn-primary full" onclick="doLogin()">Login</button>
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerForm" style="display:none">
+        <div class="field">
+          <label>Username <small>(must end with @, e.g. john@)</small></label>
+          <input type="text" id="regUser" placeholder="yourname@"/>
+        </div>
+        <div class="field">
+          <label>Password <small>(minimum 8 characters)</small></label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass" placeholder="Create password"/>
+            <button class="eye-btn" onclick="togglePass('regPass')">👁</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass2" placeholder="Repeat password"/>
+            <button class="eye-btn" onclick="togglePass('regPass2')">👁</button>
+          </div>
+        </div>
+        <div class="err-msg" id="regErr"></div>
+        <div class="suc-msg" id="regSuc"></div>
+        <button class="btn-primary full" onclick="doRegister()">Create Account</button>
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
